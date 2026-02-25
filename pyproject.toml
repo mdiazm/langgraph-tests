@@ -1,0 +1,18 @@
+[project]
+name = "azureai"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "dotenv>=0.9.9",
+    "langchain[openai]>=1.2.10",
+    "langgraph[openai]>=1.0.9",
+    "numpy>=2.4.2",
+    "openai>=2.21.0",
+]
+
+[dependency-groups]
+dev = [
+    "jupyter>=1.1.1",
+]
