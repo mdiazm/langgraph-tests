@@ -1,6 +1,6 @@
-# AzureAI - LangGraph Testing Repository
+# LangGraph Playground
 
-This repository is dedicated to testing and experimenting with various capabilities of the [LangGraph](https://langchain-ai.github.io/langgraph.py/) library.
+This repository is dedicated to testing and experimenting with various capabilities of the [LangGraph](https://www.langchain.com/langgraph) library.
 
 ## Overview
 
