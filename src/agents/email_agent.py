@@ -6,7 +6,12 @@ from langgraph.checkpoint.memory import MemorySaver
 
 from langchain.messages import HumanMessage
 
-from src.llm.openai import llm
+try:
+    from src.llm.openai import llm
+except:
+    # Use local Ollama instance when Azure models are not available
+    from src.llm.ollama import llm
+
 from src.models.email_agent import EmailAgentState, EmailClassification
 
 

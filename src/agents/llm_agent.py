@@ -6,7 +6,12 @@ from langchain.messages import SystemMessage, ToolMessage, HumanMessage, AIMessa
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import InMemorySaver
 
-from src.llm.openai import llm
+try:
+    from src.llm.openai import llm
+except:
+    # Use local Ollama instance when Azure models are not available
+    from src.llm.ollama import llm
+
 from src.models.tool_agent import ToolAgentState
 from src.tools.date import get_current_date
 
@@ -16,7 +21,7 @@ def llm_call(state: ToolAgentState) -> dict:
     llm_calls: int = state.llm_calls + 1
 
     system: SystemMessage = SystemMessage(content="You are a helpful assistant. Use the tone as if you were a pirate.")
-    response = llm.invoke([system] + state.messages, temperature=0)
+    response = llm.invoke([system] + state.messages)
 
     return {
         "messages": [response],
