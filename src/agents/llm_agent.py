@@ -13,7 +13,6 @@ except:
     from src.llm.ollama import llm
 
 from src.models.tool_agent import ToolAgentState
-from src.tools.date import get_current_date
 
 
 def llm_call(state: ToolAgentState) -> dict:
@@ -57,6 +56,6 @@ app = agent.compile(checkpointer=memory)
 if __name__ == '__main__':
 
     config = {"configurable": {"thread_id": "1"}}
-    result = app.invoke({"messages": [HumanMessage("How are you")]}, config)
+    result = app.invoke({"messages": [HumanMessage("What time is it today?")]}, config)
     result_memory = app.invoke({"messages": [HumanMessage("What did I ask before?")]}, config)
     pprint.pprint(result_memory)
