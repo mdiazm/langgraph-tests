@@ -1,5 +1,6 @@
 import json
 from typing import Literal
+import pprint
 
 from langchain.messages import SystemMessage, ToolMessage, HumanMessage, AIMessage
 from langgraph.graph import StateGraph, START, END
@@ -10,13 +11,15 @@ from src.models.tool_agent import ToolAgentState
 from src.tools.date import get_current_date
 
 
-def first_node(state: ToolAgentState) -> dict:
+def llm_call(state: ToolAgentState) -> dict:
     """Just a dummy node in an agentic workflow"""
     llm_calls: int = state.llm_calls + 1
-    message: AIMessage = AIMessage(content="This is the first message from the fake LLM")
+
+    system: SystemMessage = SystemMessage(content="You are a helpful assistant. Use the tone as if you were a pirate.")
+    response = llm.invoke([system] + state.messages, temperature=0)
 
     return {
-        "messages": [message],
+        "messages": [response],
         "llm_calls": llm_calls
     }
 
@@ -34,7 +37,7 @@ def second_node(state: ToolAgentState) -> dict:
 
 # Define the agent workflow
 agent = StateGraph(ToolAgentState)
-agent.add_node("first_node", first_node)
+agent.add_node("first_node", llm_call)
 agent.add_node("second_node", second_node)
 
 agent.add_edge(START, "first_node")
@@ -50,5 +53,5 @@ if __name__ == '__main__':
 
     config = {"configurable": {"thread_id": "1"}}
     result = app.invoke({"messages": [HumanMessage("How are you")]}, config)
-    result_memory = app.invoke({"messages": [HumanMessage("How are you")]}, config)
-    print(result_memory)
+    result_memory = app.invoke({"messages": [HumanMessage("What did I ask before?")]}, config)
+    pprint.pprint(result_memory)
