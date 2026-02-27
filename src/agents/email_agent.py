@@ -1,28 +1,13 @@
-import os
 from typing import Literal
 
 from langgraph.graph import StateGraph, START, END
 from langgraph.types import interrupt, Command, RetryPolicy
 from langgraph.checkpoint.memory import MemorySaver
-from langchain_openai import AzureChatOpenAI
+
 from langchain.messages import HumanMessage
-from dotenv import load_dotenv
 
+from src.llm.openai import llm
 from src.models.email_agent import EmailAgentState, EmailClassification
-
-_ = load_dotenv()
-
-deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT")
-api_version = os.getenv("AZURE_OPENAI_API_VERSION")
-model = os.getenv("AZURE_OPENAI_MODEL")
-
-# Create OpenAI client
-llm = AzureChatOpenAI(
-    api_version=api_version,
-    azure_deployment=deployment,
-    model=model,
-    temperature=0
-)
 
 
 def read_email(state: EmailAgentState) -> dict:
